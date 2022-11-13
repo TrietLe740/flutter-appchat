@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -87,9 +87,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 20),
               GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 primary: false,
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 itemCount: 15,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Image.asset(
                       "assets/images/cm${random.nextInt(10)}.jpeg",
                       fit: BoxFit.cover,
