@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../widgets/PostItem.dart';
 import '../utils/data.dart';
@@ -15,12 +16,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Feeds"),
+        title: const TextField(
+          decoration: InputDecoration.collapsed(
+            hintText: 'Tìm kiếm',
+          ),
+        ),
+        backgroundColor: Colors.white,
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: const Icon(
               Icons.filter_list,
+              color: Colors.black,
             ),
             onPressed: () {},
           ),
