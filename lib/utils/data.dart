@@ -98,7 +98,7 @@ List conversation = List.generate(
           "isReply": random.nextBool(),
         });
 
-List friends = List.generate(
+List peoples = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
