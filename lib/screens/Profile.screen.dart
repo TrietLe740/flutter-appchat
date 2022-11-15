@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:appchat/stores/AuthStore.dart';
 import 'package:flutter/material.dart';
 import '../utils/data.dart';
 
@@ -25,16 +26,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 60),
+              const SizedBox(height: 40),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: buildSettingButton(context),
+              ),
               CircleAvatar(
-                backgroundImage: AssetImage(
-                  "assets/images/cm${random.nextInt(10)}.jpeg",
-                ),
+                backgroundImage: AuthStore.photoUrl != null
+                    ? NetworkImage(AuthStore.photoUrl as String)
+                    : const AssetImage('assets/images/noImageAvailable.png')
+                        as ImageProvider,
+
+                // Image.network(
+                //   AuthStore.photoURL,
+                //   fit: BoxFit.cover,
+                // ),
+                // AssetImage(
+                //   "assets/images/cm${random.nextInt(2) + 1}.jpg",
+                // ),
                 radius: 50,
               ),
               const SizedBox(height: 10),
               Text(
-                names[random.nextInt(10)],
+                AuthStore.displayName != null
+                    ? AuthStore.displayName as String
+                    : 'username',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -99,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Image.asset(
-                      "assets/images/cm${random.nextInt(10)}.jpeg",
+                      "assets/images/cm${random.nextInt(2) + 1}.jpg",
                       fit: BoxFit.cover,
                     ),
                   );
@@ -110,6 +126,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  buildSettingButton(BuildContext context) {
+    const List<String> list = <String>[
+      'Sign Out',
+    ];
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(
+        value: "signout",
+        onTap: () {
+          AuthStore.signOut(context);
+        },
+        child: const Text("Sign Out"),
+      ),
+    ];
+    String dropdownValue = list.first;
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            icon: const Icon(Icons.settings),
+            elevation: 16,
+            onChanged: (String? value) {},
+            items: menuItems,
+          ),
+        ));
   }
 
   Widget _buildCategory(String title) {
