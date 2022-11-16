@@ -1,4 +1,6 @@
 import 'package:appchat/screens/Auth.screen.dart';
+import 'package:appchat/utils/data.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +15,28 @@ class AuthStore {
         email: email,
         password: password,
       );
+      final uid = result.user?.uid;
+      await FirebaseDatabase.instance
+          .ref('/users/user-$uid/photoUrl')
+          .set(user?.photoURL);
+      await FirebaseDatabase.instance
+          .ref('/users/user-$uid/displayName')
+          .set(user?.displayName);
+      await FirebaseDatabase.instance
+          .ref('/users/user-$uid/isOnline')
+          .set(true);
+      await FirebaseDatabase.instance
+          .ref('/users/user-$uid/email')
+          .set(user?.displayName);
+      await FirebaseDatabase.instance
+          .ref('/users/user-$uid/displayName')
+          .set(user?.displayName);
       return result.user;
     } on FirebaseAuthException catch (error) {
       print(error.code);
       rethrow;
     }
   }
-
-  // static
 
   static Future<User?> currentUser() async {
     return _auth.currentUser;
@@ -53,7 +69,10 @@ class AuthStore {
   }
 
   static Future<void> signOut(context) async {
+    final uid = _auth.currentUser?.uid;
+    print(uid);
     await _auth.signOut();
+    await FirebaseDatabase.instance.ref('/users/user-$uid/isOnline').set(false);
     Navigator.of(context).pushReplacementNamed(AuthScreen.id);
   }
 
@@ -72,6 +91,18 @@ class AuthStore {
       final user = result.user;
       await user?.updateDisplayName(displayName);
       await user?.updatePhotoURL(photoURL);
+      final Map<String, Map> updates = {};
+      final newUser = {
+        'email': user?.email,
+        'displayName': displayName,
+        'status': '',
+        'isOnline': true,
+        'photoUrl': photoURL,
+      };
+      print(newUser);
+      updates['/users/user-${user?.uid}'] = newUser;
+
+      await FirebaseDatabase.instance.ref().update(updates);
       return user;
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');

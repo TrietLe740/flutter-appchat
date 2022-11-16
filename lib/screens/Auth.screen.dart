@@ -254,8 +254,8 @@ class _AuthScreenState extends State<AuthScreen> {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'Display Name'),
       validator: (value) {
-        if (value == null || value.length < 5) {
-          return 'Password is too short!';
+        if (value == null) {
+          return 'Is required';
         }
         return null;
       },
