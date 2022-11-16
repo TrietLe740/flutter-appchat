@@ -43,13 +43,11 @@ List notifs = [
   "${names[random.nextInt(10)]} Sent you a friend request",
 ];
 
-List img = [""];
-
 List notifications = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/images/cm${random.nextInt(2)}.jpg",
+          "dp": "assets/images/cm${random.nextInt(3) + 1}.jpg",
           "time": "${random.nextInt(50)} min ago",
           "notif": notifs[random.nextInt(10)]
         });
@@ -58,16 +56,16 @@ List posts = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/images/cm${random.nextInt(2)}.jpg",
+          "dp": "assets/images/cm${random.nextInt(3) + 1}.jpg",
           "time": "${random.nextInt(50)} min ago",
-          "img": "assets/images/cm${random.nextInt(2)}.jpg"
+          "img": "assets/images/cm${random.nextInt(3) + 1}.jpg"
         });
 
 List chats = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/images/cm${random.nextInt(2)}.jpg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpg",
           "msg": messages[random.nextInt(10)],
           "counter": random.nextInt(20),
           "time": "${random.nextInt(50)} min ago",
@@ -78,7 +76,7 @@ List groups = List.generate(
     13,
     (index) => {
           "name": "Group ${random.nextInt(20)}",
-          "dp": "assets/images/cm${random.nextInt(2)}.jpg",
+          "dp": "assets/images/cm${random.nextInt(3) + 1}.jpg",
           "msg": messages[random.nextInt(10)],
           "counter": random.nextInt(20),
           "time": "${random.nextInt(50)} min ago",
@@ -87,7 +85,7 @@ List groups = List.generate(
 
 List types = ["text", "image"];
 List conversation = List.generate(
-    10,
+    20,
     (index) => {
           "username": "Group ${random.nextInt(20)}",
           "time": "${random.nextInt(50)} min ago",
@@ -102,7 +100,7 @@ List peoples = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/images/cm${random.nextInt(2)}.jpg",
+          "dp": "assets/images/cm${random.nextInt(2) + 1}.jpg",
           "status": "Anything could be here",
           "isAccept": random.nextBool(),
         });

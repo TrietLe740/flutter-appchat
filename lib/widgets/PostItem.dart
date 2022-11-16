@@ -48,12 +48,14 @@ class _PostItemState extends State<PostItem> {
                 ),
               ),
             ),
-            Image.asset(
-              "${widget.img}",
-              height: 170,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
+            Container(
+              height: 200,
+              child: Image.asset(
+                "${widget.img}",
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+            )
           ],
         ),
         onTap: () {},
