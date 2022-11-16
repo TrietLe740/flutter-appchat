@@ -3,6 +3,7 @@ import 'package:appchat/firebase_options.dart';
 import 'package:appchat/screens/Auth.screen.dart';
 import 'package:appchat/stores/ChatStore.dart';
 import 'package:appchat/utils/themeConfig.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +25,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<ChatManager>(
           create: (ctx) => ChatManager(),
-        )
+        ),
+        // ChangeNotifierProvider(
+        //   create: (ctx) => ChatManager(),
+        // )
       ],
       child: MaterialApp(
         title: 'Fluttergram',

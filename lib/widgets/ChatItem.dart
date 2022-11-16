@@ -1,22 +1,24 @@
-import 'package:appchat/screens/chat/conversation.dart';
+import 'package:appchat/screens/chat/Conversation.dart';
 import 'package:flutter/material.dart';
 // import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final String conversationId;
+  final String chatItemId;
   final String avatar;
   final String name;
   final String time;
   final String lastMsg;
+  final String lastSentUser;
   final bool isOnline;
   final int counter;
 
   const ChatItem({
-    required this.conversationId,
+    required this.chatItemId,
     required this.avatar,
     required this.name,
     required this.time,
     required this.lastMsg,
+    required this.lastSentUser,
     required this.isOnline,
     required this.counter,
     super.key,
@@ -34,9 +36,9 @@ class _ChatItemState extends State<ChatItem> {
       leading: Stack(
         children: <Widget>[
           CircleAvatar(
-            backgroundImage: AssetImage(
-              widget.avatar,
-            ),
+            backgroundImage: widget.avatar.startsWith('assets')
+                ? AssetImage(widget.avatar) as ImageProvider
+                : NetworkImage(widget.avatar),
             radius: 25,
           ),
           Positioned(
@@ -87,7 +89,7 @@ class _ChatItemState extends State<ChatItem> {
             ),
           ),
           const SizedBox(height: 5),
-          widget.counter == 0
+          widget.counter > -1
               ? const SizedBox()
               : Container(
                   padding: const EdgeInsets.all(1),
@@ -117,7 +119,12 @@ class _ChatItemState extends State<ChatItem> {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return Conversation();
+              return Conversation(
+                chatItemId: widget.chatItemId,
+                avatar: widget.avatar,
+                name: widget.name,
+                isOnline: widget.isOnline,
+              );
             },
           ),
         );
