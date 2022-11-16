@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:appchat/stores/AuthStore.dart';
+import 'package:appchat/widgets/ImageUpload.dart';
 import 'package:flutter/material.dart';
 import '../utils/data.dart';
 
@@ -31,21 +32,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 alignment: Alignment.bottomRight,
                 child: buildSettingButton(context),
               ),
-              CircleAvatar(
-                backgroundImage: AuthStore.photoUrl != null
-                    ? NetworkImage(AuthStore.photoUrl as String)
-                    : const AssetImage('assets/images/noImageAvailable.png')
-                        as ImageProvider,
-
-                // Image.network(
-                //   AuthStore.photoURL,
-                //   fit: BoxFit.cover,
-                // ),
-                // AssetImage(
-                //   "assets/images/cm${random.nextInt(2) + 1}.jpg",
-                // ),
-                radius: 50,
-              ),
+              TextButton(
+                  onPressed: () => {
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return const ImageUpload();
+                            },
+                          ),
+                        )
+                      },
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AuthStore.photoUrl != null
+                            ? NetworkImage(AuthStore.photoUrl as String)
+                            : const AssetImage(
+                                    'assets/images/noImageAvailable.png')
+                                as ImageProvider,
+                        radius: 50,
+                      )
+                    ],
+                  )),
               const SizedBox(height: 10),
               Text(
                 AuthStore.displayName != null
