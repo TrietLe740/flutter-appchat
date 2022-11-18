@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:appchat/stores/AuthStore.dart';
-import 'package:appchat/widgets/ImageUpload.dart';
 import 'package:flutter/material.dart';
-import '../utils/data.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -33,15 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: buildSettingButton(context),
               ),
               TextButton(
-                  onPressed: () => {
-                        Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return const ImageUpload();
-                            },
-                          ),
-                        )
-                      },
+                  onPressed: () => {},
                   child: Column(
                     children: [
                       CircleAvatar(
