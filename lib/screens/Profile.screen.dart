@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:appchat/stores/AuthStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -35,8 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: [
                       CircleAvatar(
-                        backgroundImage: AuthStore.photoUrl != null
-                            ? NetworkImage(AuthStore.photoUrl as String)
+                        backgroundImage: AuthManager.photoUrl != null
+                            ? NetworkImage(AuthManager.photoUrl as String)
                             : const AssetImage(
                                     'assets/images/noImageAvailable.png')
                                 as ImageProvider,
@@ -46,8 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )),
               const SizedBox(height: 10),
               Text(
-                AuthStore.displayName != null
-                    ? AuthStore.displayName as String
+                AuthManager.displayName != null
+                    ? AuthManager.displayName as String
                     : 'username',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       DropdownMenuItem(
         value: "signout",
         onTap: () {
-          AuthStore.signOut(context);
+          AuthManager.signOut(context);
         },
         child: const Text("Sign Out"),
       ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../widgets/PostItem.dart';
 import '../utils/data.dart';
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: const TextField(
             decoration: InputDecoration.collapsed(
-              hintText: 'Tìm kiếm',
+              hintText: 'Search',
             ),
           ),
           backgroundColor: Colors.white,

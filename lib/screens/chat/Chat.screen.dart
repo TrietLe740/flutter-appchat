@@ -1,7 +1,8 @@
-import 'package:appchat/stores/ChatStore.dart';
+import 'package:appchat/stores/ChatManager.dart';
 import 'package:appchat/utils/timePassed.dart';
 import 'package:appchat/widgets/ChatItem.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  // ignore: avoid_init_to_null
   var instance = null;
   String searchName = '';
   String onlineFilter = '';
@@ -93,6 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   buildFiltterButton() {
+    // ignore: unused_local_variable
     const List<String> list = <String>[
       'Online',
       'Offline',

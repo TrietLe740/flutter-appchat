@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-import 'package:appchat/stores/AuthStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
 import 'package:appchat/utils/data.dart';
 import 'package:appchat/widgets/ChatItem.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -20,7 +20,7 @@ class ChatManager with ChangeNotifier {
     var fetchUser, fetchChatItem;
     var user;
     try {
-      final uid = AuthStore.user!.uid;
+      final uid = AuthManager.user!.uid;
       if (data != null) {
         final ref = FirebaseDatabase.instance.ref();
         print(data);
@@ -75,7 +75,7 @@ class ChatManager with ChangeNotifier {
     chatItems = [];
 
     try {
-      final uid = AuthStore.user!.uid;
+      final uid = AuthManager.user!.uid;
       ref = FirebaseDatabase.instance
           .ref("userChats/user-$uid")
           .onValue
@@ -100,7 +100,7 @@ class ChatManager with ChangeNotifier {
     sendTo,
   }) async {
     try {
-      final uid = AuthStore.user!.uid;
+      final uid = AuthManager.user!.uid;
       final data = await FirebaseDatabase.instance
           .ref('/userChats/user-$uid/$sendTo')
           .get();
@@ -169,7 +169,7 @@ class ChatManager with ChangeNotifier {
 
   static void addChatMessages(
       String? message, String sentBy, String chatItemsKey) async {
-    final uid = AuthStore.user!.uid;
+    final uid = AuthManager.user!.uid;
     final timeNow = DateTime.now().toIso8601String() as dynamic;
     // message ??= messages[random.nextInt(10)];
     if (message == '') return;
@@ -186,7 +186,7 @@ class ChatManager with ChangeNotifier {
         .push()
         .key;
     final Map<String, Map> updates = {};
-    updates['/chatMessages/$chatItemsKey/$newMsgKey'] = newMessage;
+    updates['/chatMessages/$chatItemsKey/msg$newMsgKey'] = newMessage;
     FirebaseDatabase.instance
         .ref('/chatItems/$chatItemsKey/lastMsg')
         .set(message);

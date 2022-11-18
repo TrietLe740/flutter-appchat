@@ -1,6 +1,6 @@
 // import 'package:appchat/screens/chat_screen.dart';
 import 'package:appchat/App.dart';
-import 'package:appchat/stores/AuthStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
 import 'package:appchat/utils/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
 
   Future _checkSession(context) async {
-    final user = await AuthStore.currentUser();
+    final user = await AuthManager.currentUser();
     if (user != null) {
       Navigator.of(context).pushReplacementNamed(App.id);
     }
@@ -47,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       if (_authMode == AuthMode.login) {
         // Log user in
-        final user = await AuthStore.signIn(
+        final user = await AuthManager.signIn(
           email: _authData['email']!,
           password: _authData['password']!,
         );
@@ -56,7 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       } else {
         // Sign user up
-        final user = await AuthStore.signUp(
+        final user = await AuthManager.signUp(
           email: _authData['email']!,
           displayName: _authData['displayName']!,
           password: _authData['password']!,

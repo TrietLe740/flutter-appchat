@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthStore {
+class AuthManager {
   static final _auth = FirebaseAuth.instance;
 
   static Future<User?> signIn(

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:appchat/screens/chat/Conversation.dart';
-import 'package:appchat/stores/AuthStore.dart';
-import 'package:appchat/stores/ChatStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
+import 'package:appchat/stores/ChatManager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../utils/data.dart';
@@ -26,7 +26,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
           .onValue
           .listen((DatabaseEvent event) async {
         final data = event.snapshot.value as dynamic;
-        final uid = AuthStore.user!.uid;
+        final uid = AuthManager.user!.uid;
         print(data);
         List fectList = [];
         data.keys.forEach((key) {
@@ -74,7 +74,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
         appBar: AppBar(
           title: const TextField(
             decoration: InputDecoration.collapsed(
-              hintText: 'Sreach',
+              hintText: 'Search',
             ),
           ),
           backgroundColor: Colors.white,

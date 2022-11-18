@@ -1,7 +1,7 @@
 import 'package:appchat/App.dart';
 import 'package:appchat/firebase_options.dart';
 import 'package:appchat/screens/Auth.screen.dart';
-import 'package:appchat/stores/ChatStore.dart';
+import 'package:appchat/stores/ChatManager.dart';
 import 'package:appchat/utils/themeConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

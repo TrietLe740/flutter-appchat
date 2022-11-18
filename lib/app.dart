@@ -3,7 +3,7 @@ import 'package:appchat/screens/chat/Chat.screen.dart';
 import 'package:appchat/screens/Notification.screen.dart';
 import 'package:appchat/screens/People.screen.dart';
 import 'package:appchat/screens/Profile.screen.dart';
-import 'package:appchat/stores/AuthStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    final uid = AuthStore.user!.uid;
+    final uid = AuthManager.user!.uid;
     if (state == AppLifecycleState.resumed) {
       print('\n\nOnline');
       await FirebaseDatabase.instance

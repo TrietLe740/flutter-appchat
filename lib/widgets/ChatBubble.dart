@@ -3,13 +3,14 @@ import 'dart:math';
 import 'package:appchat/utils/timePassed.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class ChatBubble extends StatefulWidget {
   final String message, time, type, messageId, chatItemId;
   final bool isMe, isReply;
 
-  ChatBubble({
+  const ChatBubble({
     required this.message,
     required this.messageId,
     required this.chatItemId,
@@ -86,11 +87,7 @@ class _ChatBubbleState extends State<ChatBubble> {
       children: <Widget>[
         GestureDetector(
           onLongPress: () {
-            print('Tap ne:${widget.messageId}`');
-            print(widget.isMe);
-            showConfirmDialog(
-                context, widget.message, widget.messageId, widget.chatItemId);
-            if (widget.isMe) {}
+            _bottomPopUp();
           },
           child: Container(
             padding: const EdgeInsets.all(5.0),
@@ -107,7 +104,7 @@ class _ChatBubbleState extends State<ChatBubble> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(width: 2.0),
-                widget.isReply ? SizedBox(height: 5) : SizedBox(),
+                widget.isReply ? const SizedBox(height: 5) : SizedBox(),
                 Padding(
                   padding: EdgeInsets.all(widget.type == "text" ? 5 : 0),
                   child: widget.type == "text"
@@ -150,39 +147,101 @@ class _ChatBubbleState extends State<ChatBubble> {
         ),
         Padding(
           padding: widget.isMe
-              ? EdgeInsets.only(right: 10, bottom: 10.0)
-              : EdgeInsets.only(left: 10, bottom: 10.0),
+              ? const EdgeInsets.only(right: 10, bottom: 10.0)
+              : const EdgeInsets.only(left: 10, bottom: 10.0),
           child: buildTimePassed(),
         ),
       ],
     );
   }
 
-  Future<bool?> showConfirmDialog(BuildContext context, String message,
-      String messageId, String chatItemId) {
-    return showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Are you sure remove?'),
-        content: Text('"${message}"'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('No'),
-            onPressed: () {
-              Navigator.of(ctx).pop(false);
-            },
-          ),
-          TextButton(
-            child: const Text('Yes'),
-            onPressed: () {
-              FirebaseDatabase.instance
-                  .ref("chatMessages/${widget.chatItemId}/${widget.messageId}")
-                  .remove();
-              Navigator.of(ctx).pop(true);
-            },
-          ),
-        ],
-      ),
-    );
+  void _bottomPopUp() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * .15,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                bottom: 30,
+                left: 0,
+                right: 0,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextButton(
+                      child: Column(children: const [
+                        Icon(Icons.arrow_back),
+                        Text("Reply"),
+                      ]),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      child: Column(children: const [
+                        Icon(Icons.copy),
+                        Text("Copy"),
+                      ]),
+                      onPressed: () {},
+                    ),
+                  ),
+                  if (widget.isMe == true)
+                    Expanded(
+                      child: TextButton(
+                        child: Column(children: const [
+                          Icon(Icons.delete_outlined),
+                          Text("Delete"),
+                        ]),
+                        onPressed: () {
+                          if (widget.isMe) {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text('Are you sure remove?'),
+                                content: Text('"${widget.message}"'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('No'),
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop(false);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Yes'),
+                                    onPressed: () {
+                                      FirebaseDatabase.instance
+                                          .ref(
+                                              "chatMessages/${widget.chatItemId}/${widget.messageId}")
+                                          .remove();
+                                      Navigator.of(ctx).pop(true);
+                                      Navigator.of(ctx).pop(true);
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  Expanded(
+                    child: TextButton(
+                      child: Column(children: const [
+                        Icon(Icons.arrow_forward),
+                        Text("Foward"),
+                      ]),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

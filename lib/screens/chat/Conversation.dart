@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:appchat/stores/AuthStore.dart';
-import 'package:appchat/stores/ChatStore.dart';
+import 'package:appchat/stores/AuthManager.dart';
+import 'package:appchat/stores/ChatManager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class Conversation extends StatefulWidget {
 
 class _ConversationState extends State<Conversation> {
   static Random random = Random();
-  final uid = AuthStore.user!.uid;
+  final uid = AuthManager.user!.uid;
   final sentMessageController = TextEditingController();
 
   String name = names[random.nextInt(10)];
@@ -78,63 +78,68 @@ class _ConversationState extends State<Conversation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 3,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.keyboard_backspace,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        titleSpacing: 0,
-        title: buildAppBarTitle(),
-        actions: <Widget>[
-          IconButton(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 3,
+          leading: IconButton(
             icon: const Icon(
-              Icons.more_horiz,
+              Icons.keyboard_backspace,
             ),
-            onPressed: () {
-              print('Conver options');
-            },
+            onPressed: () => Navigator.pop(context),
           ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Flexible(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              itemCount: MessageList.length,
-              reverse: true,
-              itemBuilder: (BuildContext context, int index) {
-                Map msg = MessageList[index];
-                return ChatBubble(
-                  message: msg['message'],
-                  chatItemId: widget.chatItemId,
-                  messageId: msg['messageKey'],
-                  time: msg["time"],
-                  type: 'text',
-                  isMe: msg['sentBy'] == 'user-$uid',
-                  isReply: msg['sentBy'] != 'user-$uid',
-                );
+          titleSpacing: 0,
+          title: buildAppBarTitle(),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.more_horiz,
+              ),
+              onPressed: () {
+                // print('Conver options');
               },
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: BottomAppBar(
-              elevation: 10,
-              color: Theme.of(context).primaryColor,
-              child: Container(
-                constraints: const BoxConstraints(
-                  maxHeight: 100,
-                ),
-                child: buildSendInput(),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Flexible(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                itemCount: MessageList.length,
+                reverse: true,
+                itemBuilder: (BuildContext context, int index) {
+                  Map msg = MessageList[index];
+                  return ChatBubble(
+                    message: msg['message'],
+                    chatItemId: widget.chatItemId,
+                    messageId: msg['messageKey'],
+                    time: msg["time"],
+                    type: 'text',
+                    isMe: msg['sentBy'] == 'user-$uid',
+                    isReply: msg['sentBy'] != 'user-$uid',
+                  );
+                },
               ),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomAppBar(
+                elevation: 10,
+                color: Theme.of(context).primaryColor,
+                child: Container(
+                  constraints: const BoxConstraints(
+                    maxHeight: 100,
+                  ),
+                  child: buildSendInput(),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -175,9 +180,7 @@ class _ConversationState extends State<Conversation> {
           ),
         ],
       ),
-      onTap: () {
-        // MessageService.sendMessage(message: 'tstset', senderId: 'dsdfsdf');
-      },
+      onTap: () {},
     );
   }
 
@@ -190,9 +193,7 @@ class _ConversationState extends State<Conversation> {
             Icons.add,
             color: Theme.of(context).colorScheme.secondary,
           ),
-          onPressed: () {
-            // AuthStore.signIn(email: 'vinh466@gmail.com', password: '123456');
-          },
+          onPressed: () {},
         ),
         Flexible(
           child: TextField(
@@ -220,9 +221,8 @@ class _ConversationState extends State<Conversation> {
             color: Theme.of(context).colorScheme.secondary,
           ),
           onPressed: () {
-            final uid = AuthStore.user!.uid;
-            // messages[random.nextInt(10)]
-            print('Add message');
+            final uid = AuthManager.user!.uid;
+            // print('Add message');
             ChatManager.addChatMessages(
                 sentMessageController.text, 'user-$uid', widget.chatItemId);
             sentMessageController.clear();
