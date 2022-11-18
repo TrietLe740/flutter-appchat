@@ -1,15 +1,18 @@
 import 'dart:math';
 
 import 'package:appchat/utils/timePassed.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatBubble extends StatefulWidget {
-  final String message, time, type;
+  final String message, time, type, messageId, chatItemId;
   final bool isMe, isReply;
 
   ChatBubble({
     required this.message,
+    required this.messageId,
+    required this.chatItemId,
     required this.time,
     required this.isMe,
     // required this.isGroup,
@@ -81,41 +84,37 @@ class _ChatBubbleState extends State<ChatBubble> {
     return Column(
       crossAxisAlignment: align,
       children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(3.0),
-          padding: const EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-            color: chatBubbleColor(),
-            borderRadius: radius,
-          ),
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width / 1.3,
-            minWidth: 20.0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(width: 2.0),
-              widget.isReply ? SizedBox(height: 5) : SizedBox(),
-              Padding(
-                padding: EdgeInsets.all(widget.type == "text" ? 5 : 0),
-                child: widget.type == "text"
-                    ? !widget.isReply
-                        ? Text(
-                            widget.message,
-                            style: TextStyle(
-                              color: widget.isMe
-                                  ? Colors.white
-                                  : Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      ?.color,
-                            ),
-                          )
-                        : Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
+        GestureDetector(
+          onTap: () {
+            print('Tap ne:${widget.messageId}`');
+            print(widget.isMe);
+            if (widget.isMe) {
+              FirebaseDatabase.instance
+                  .ref("chatMessages/${widget.chatItemId}/${widget.messageId}")
+                  .remove();
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              color: chatBubbleColor(),
+              borderRadius: radius,
+            ),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width / 1.3,
+              minWidth: 20.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(width: 2.0),
+                widget.isReply ? SizedBox(height: 5) : SizedBox(),
+                Padding(
+                  padding: EdgeInsets.all(widget.type == "text" ? 5 : 0),
+                  child: widget.type == "text"
+                      ? !widget.isReply
+                          ? Text(
                               widget.message,
                               style: TextStyle(
                                 color: widget.isMe
@@ -125,16 +124,30 @@ class _ChatBubbleState extends State<ChatBubble> {
                                         .headline6
                                         ?.color,
                               ),
-                            ),
-                          )
-                    : Image.asset(
-                        "${widget.message}",
-                        height: 130,
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ],
+                            )
+                          : Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.message,
+                                style: TextStyle(
+                                  color: widget.isMe
+                                      ? Colors.white
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          ?.color,
+                                ),
+                              ),
+                            )
+                      : Image.asset(
+                          "${widget.message}",
+                          height: 130,
+                          width: MediaQuery.of(context).size.width / 1.3,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ],
+            ),
           ),
         ),
         Padding(

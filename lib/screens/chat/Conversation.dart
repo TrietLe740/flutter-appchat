@@ -3,10 +3,12 @@ import 'dart:math';
 
 import 'package:appchat/stores/AuthStore.dart';
 import 'package:appchat/stores/ChatStore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:appchat/widgets/ChatBubble.dart';
 import 'package:appchat/utils/data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 class Conversation extends StatefulWidget {
@@ -109,8 +111,8 @@ class _ConversationState extends State<Conversation> {
                 Map msg = MessageList[index];
                 return ChatBubble(
                   message: msg['message'],
-                  // == "text" ? messages[random.nextInt(10)]
-                  //     : "assets/images/cm${random.nextInt(2) + 1}.jpg",
+                  chatItemId: widget.chatItemId,
+                  messageId: msg['messageKey'],
                   time: msg["time"],
                   type: 'text',
                   isMe: msg['sentBy'] == 'user-$uid',
@@ -174,7 +176,6 @@ class _ConversationState extends State<Conversation> {
         ],
       ),
       onTap: () {
-        print('Go to User');
         // MessageService.sendMessage(message: 'tstset', senderId: 'dsdfsdf');
       },
     );
