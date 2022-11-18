@@ -85,14 +85,12 @@ class _ChatBubbleState extends State<ChatBubble> {
       crossAxisAlignment: align,
       children: <Widget>[
         GestureDetector(
-          onTap: () {
+          onLongPress: () {
             print('Tap ne:${widget.messageId}`');
             print(widget.isMe);
-            if (widget.isMe) {
-              FirebaseDatabase.instance
-                  .ref("chatMessages/${widget.chatItemId}/${widget.messageId}")
-                  .remove();
-            }
+            showConfirmDialog(
+                context, widget.message, widget.messageId, widget.chatItemId);
+            if (widget.isMe) {}
           },
           child: Container(
             padding: const EdgeInsets.all(5.0),
@@ -157,6 +155,34 @@ class _ChatBubbleState extends State<ChatBubble> {
           child: buildTimePassed(),
         ),
       ],
+    );
+  }
+
+  Future<bool?> showConfirmDialog(BuildContext context, String message,
+      String messageId, String chatItemId) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Are you sure remove?'),
+        content: Text('"${message}"'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('No'),
+            onPressed: () {
+              Navigator.of(ctx).pop(false);
+            },
+          ),
+          TextButton(
+            child: const Text('Yes'),
+            onPressed: () {
+              FirebaseDatabase.instance
+                  .ref("chatMessages/${widget.chatItemId}/${widget.messageId}")
+                  .remove();
+              Navigator.of(ctx).pop(true);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

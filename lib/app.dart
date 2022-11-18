@@ -4,11 +4,8 @@ import 'package:appchat/screens/Notification.screen.dart';
 import 'package:appchat/screens/People.screen.dart';
 import 'package:appchat/screens/Profile.screen.dart';
 import 'package:appchat/stores/AuthStore.dart';
-import 'package:appchat/stores/ChatStore.dart';
-import 'package:appchat/widgets/ImageUpload.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   static const id = 'AppScreen';

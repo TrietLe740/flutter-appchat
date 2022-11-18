@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:image_picker/image_picker.dart';
 import '../widgets/PostItem.dart';
 import '../utils/data.dart';
 
@@ -68,9 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     body: Center(
                       child: TextButton(
                         child: const Text('Upload'),
-                        onPressed: () {
-                          _pickImage();
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   );
@@ -81,15 +76,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  final ImagePicker _picker = ImagePicker();
-  void _pickImage() async {
-    try {
-      final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-      print("up");
-    } catch (e) {
-      print("Image picker error ");
-    }
   }
 }
