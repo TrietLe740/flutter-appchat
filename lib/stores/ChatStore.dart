@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-import 'dart:math';
-import 'package:intl/intl.dart';
 import 'package:appchat/stores/AuthStore.dart';
 import 'package:appchat/utils/data.dart';
 import 'package:appchat/widgets/ChatItem.dart';
@@ -23,10 +21,10 @@ class ChatManager with ChangeNotifier {
     var user;
     try {
       final uid = AuthStore.user!.uid;
-      chatItems = [];
       if (data != null) {
         final ref = FirebaseDatabase.instance.ref();
         print(data);
+        chatItems = [];
         data.keys.forEach((sendToId) async {
           if (sendToId != 'lastActive') {
             var chatItemId = data[sendToId]['chatItemId'];
@@ -74,6 +72,8 @@ class ChatManager with ChangeNotifier {
   }
 
   Future<void> fetchChatItems([bool filterByUser = false]) async {
+    chatItems = [];
+
     try {
       final uid = AuthStore.user!.uid;
       ref = FirebaseDatabase.instance
@@ -171,8 +171,8 @@ class ChatManager with ChangeNotifier {
       String? message, String sentBy, String chatItemsKey) async {
     final uid = AuthStore.user!.uid;
     final timeNow = DateTime.now().toIso8601String() as dynamic;
-    message ??= messages[random.nextInt(10)];
-    if (message == '') message = messages[random.nextInt(10)];
+    // message ??= messages[random.nextInt(10)];
+    if (message == '') return;
 
     final newMessage = {
       'message': message,
